@@ -2,24 +2,29 @@ package mvc_calc_app.test;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import mvc_calc_app.CalcService;
 import static org.junit.Assert.assertThrows;
 
 public class CalcServiceTest {
 
-    private CalcService calcService; // obj for this class type
+    private CalcService calcService;
 
-    @Before  // this will run each time before any test
+    @Rule
+    public TestRule testLogger = new TestResultLogger();
+
+    @Before
     public void setUp() {
-        calcService = new CalcService();  // initaite the object of clacService
+        calcService = new CalcService();
     }
 
     @Test
     public void addTest() {
         double result = calcService.performOperation(5, 3, "add");
-        assertEquals(8.0, result, 0.001); // delta is 0.001 for floating-point precision
+        assertEquals(8.0, result, 0.001);
     }
 
     @Test
@@ -27,7 +32,7 @@ public class CalcServiceTest {
         double result = calcService.performOperation(10, 4, "sub");
         assertEquals(6.0, result, 0.001);
     }
-    
+
     @Test
     public void mulTest() {
         double result = calcService.performOperation(6, 2, "mul");
@@ -40,4 +45,8 @@ public class CalcServiceTest {
         assertEquals(3.0, result, 0.001);
     }
 
+    @Test
+    public void divByZeroTest() {
+        assertThrows(ArithmeticException.class, () -> calcService.performOperation(5, 0, "div"));
+    }
 }
