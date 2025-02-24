@@ -5,6 +5,7 @@ target/
 .classpath
 .project
 .settings/
+.vscode/
 
 # Ignore OS-specific files
 .DS_Store
