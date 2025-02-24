@@ -5,26 +5,36 @@ import org.junit.runner.Description;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TestResultLogger extends TestWatcher {
-    private static final String FILE_PATH = "\"C:\\Users\\surajmishra\\DevOps Assignments\\week 3-4\\Jenkins\\Test Results\""; // File to store results
+    private static final String FILE_PATH = "C:\\Users\\surajmishra\\DevOps Assignments\\week 3-4\\Jenkins\\Test Results\\TestResultRecord.txt";
+    
+    @Override
+    protected void starting(Description description) {
+        log("\n--- Spring MVC Calculator Test Results ---");
+    }
 
     @Override
     protected void succeeded(Description description) {
-        logResult(description.getMethodName(), "PASSED");
+        log(getTimestamp() + " - " + description.getMethodName() + " - PASSED");
     }
 
     @Override
     protected void failed(Throwable e, Description description) {
-        logResult(description.getMethodName(), "FAILED: " + e.getMessage());
+        log(getTimestamp() + " - " + description.getMethodName() + " - FAILED: " + e.getMessage());
     }
 
-    private void logResult(String testName, String result) {
-        try (FileWriter fw = new FileWriter(FILE_PATH, true);
-             PrintWriter pw = new PrintWriter(fw)) {
-            pw.println(testName + " - " + result);
+    private void log(String message) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))) {
+            pw.println(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 }
