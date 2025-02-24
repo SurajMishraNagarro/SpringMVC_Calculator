@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class TestResultLogger extends TestWatcher {
-    private static final String FILE_PATH = "test-results.txt"; // File to store results
+    private static final String FILE_PATH = "\"C:\\Users\\surajmishra\\DevOps Assignments\\week 3-4\\Jenkins\\Test Results\""; // File to store results
 
     @Override
     protected void succeeded(Description description) {
