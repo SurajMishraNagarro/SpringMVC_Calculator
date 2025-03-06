@@ -23,6 +23,13 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+   <groupId>org.sonarsource.sonarqube</groupId>
+   <artifactId>sonar-plugin-api</artifactId>
+   <version>7.9</version>
+   <scope>provided</scope>
+  </dependency>
   </dependencies>
   <build>
     <finalName>mvc_calc_app</finalName>
