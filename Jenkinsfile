@@ -24,6 +24,7 @@ pipeline {
 
     post {
     success {
+        echo "... wait"
         echo "Pipeline finished successfully"
     }
 }
