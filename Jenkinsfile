@@ -26,25 +26,17 @@ pipeline {
         stage('Deploy to Artifactory') {
             steps {
                 script {
-                    // Reference the Artifactory instance you configured in Jenkins.
                     def server = Artifactory.server 'artifactoryCloud'
                     
-                    // Create a build info object to capture build metadata.
                     def buildInfo = Artifactory.newBuildInfo()
                     
-                    // Set up Maven build integration with Artifactory.
                     def rtMaven = Artifactory.newMavenBuild()
                     rtMaven.tool = 'MAVEN_HOME'
                     
-                    // Configure the deployer with the appropriate repositories.
-                    // 'releaseRepo' and 'snapshotRepo' should match your Artifactory configuration.
-                    rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'snapshots'
+                    rtMaven.deployer server: server, releaseRepo: 'clacmvcapp-libs-release', snapshotRepo: 'clacmvcapp-libs-snapshot'
                     
-                    // Run the Maven build with the deploy goal.
-                    // This uses the pom.xml's distributionManagement settings.
                     rtMaven.run pom: 'pom.xml', goals: 'clean deploy', buildInfo: buildInfo
-                    
-                    // Publish the build info to Artifactory for tracking.
+
                     server.publishBuildInfo buildInfo
                 }
             }
