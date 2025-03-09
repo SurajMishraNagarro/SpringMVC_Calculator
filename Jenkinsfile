@@ -26,7 +26,7 @@ pipeline {
         stage('Deploy to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.server 'artifactoryCloud'
+                    def server = Artifactory.server 'myJFrogInstance'
                     
                     def buildInfo = Artifactory.newBuildInfo()
                     
