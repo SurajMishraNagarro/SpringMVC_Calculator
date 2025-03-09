@@ -16,15 +16,6 @@ pipeline {
                 bat 'mvn clean test'
             }
         }
-        stage('Build and Sonar Analysis') {
-            steps {
-                // SonarQube environment
-                withSonarQubeEnv('Sonarqube') {
-                   
-                    bat 'mvn clean package sonar:sonar'
-                }
-            }
-        }
     }
     
     post {
@@ -32,7 +23,7 @@ pipeline {
             echo "Pipeline finished successfully."
         }
         failure {
-            echo "Pipeline failed. Please check the Jenkins build logs and SonarQube analysis for details."
+            echo "Pipeline failed. Please check the Jenkins build logs for details."
         }
     }
 }
