@@ -28,7 +28,7 @@ pipeline {
             // Archive the  coverage reports 
             archiveArtifacts artifacts: 'target/site/jacoco/**/*.*', allowEmptyArchive: true
             
-            // Publish the HTML coverage report 
+            // Publish the HTML coverage report to jenkins
             publishHTML target: [
                 reportDir: 'target/site/jacoco',
                 reportFiles: 'index.html',
