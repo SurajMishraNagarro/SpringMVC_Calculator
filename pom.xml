@@ -1,5 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.nagarro</groupId>
   <artifactId>mvc_calc_app</artifactId>
@@ -8,7 +10,7 @@
   <name>mvc_calc_app Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
-  <!-- sonar porperties-->
+  <!-- SonarQube properties -->
   <properties>
     <sonar.projectKey>mvc_calc_app</sonar.projectKey>
     <sonar.projectName>MVC Calculator App</sonar.projectName>
@@ -29,10 +31,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>a0xanrezhajue-artifactory-primary-0-snapshots</name>
+      <url>https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
   <build>
     <plugins>
-      <!-- Other plugins -->
-
+     
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -52,7 +63,7 @@
           </execution>
         </executions>
       </plugin>
-
+     
     </plugins>
     <finalName>mvc_calc_app</finalName>
   </build>
