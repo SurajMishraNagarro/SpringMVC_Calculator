@@ -21,6 +21,8 @@ pipeline {
     post {
         success {
             
+            
+
             junit 'target/surefire-reports/*.xml'
             
             // Archive the  coverage reports 
@@ -35,10 +37,10 @@ pipeline {
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ]
-        }
-        success {
+
             echo "Pipeline finished successfully."
         }
+       
         failure {
             echo "Pipeline failed. Please check the Jenkins build logs for details."
         }
