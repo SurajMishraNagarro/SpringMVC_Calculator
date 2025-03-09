@@ -19,8 +19,22 @@ pipeline {
     }
     
     post {
-        always {
+        success {
+            
             junit 'target/surefire-reports/*.xml'
+            
+            // Archive the  coverage reports 
+            archiveArtifacts artifacts: 'target/site/jacoco/**/*.*', allowEmptyArchive: true
+            
+            // Publish the HTML coverage report 
+            publishHTML target: [
+                reportDir: 'target/site/jacoco',
+                reportFiles: 'index.html',
+                reportName: 'Code Coverage Report',
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true
+            ]
         }
         success {
             echo "Pipeline finished successfully."
