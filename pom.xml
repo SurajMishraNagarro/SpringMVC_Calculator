@@ -8,6 +8,7 @@
   <name>mvc_calc_app Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
+  <!-- sonar porperties-->
   <properties>
     <sonar.projectKey>mvc_calc_app</sonar.projectKey>
     <sonar.projectName>MVC Calculator App</sonar.projectName>
