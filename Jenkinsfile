@@ -23,6 +23,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Deploy to Artifactory') {
             steps {
                 script {
