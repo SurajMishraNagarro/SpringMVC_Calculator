@@ -41,10 +41,11 @@ pipeline {
                     rtMaven.tool = 'MAVEN_HOME'
                     
                     rtMaven.deployer server: server, 
-                                     releaseRepo: 'clacmvcapp-libs-release', 
-                                     snapshotRepo: 'clacmvcapp-libs-snapshot'
+                                     releaseRepo: "clacmvcapp-libs-release/${ARTIFACT_VERSION}/", 
+                                     snapshotRepo: "clacmvcapp-libs-snapshot/${ARTIFACT_VERSION}/"
+
                     
-                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") // Exclude sources
+                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
                     
                     rtMaven.run pom: 'pom.xml', goals: 'deploy -Drevision=${ARTIFACT_VERSION}', buildInfo: buildInfo
 
