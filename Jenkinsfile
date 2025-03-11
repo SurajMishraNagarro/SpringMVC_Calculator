@@ -5,17 +5,23 @@ pipeline {
         maven 'MAVEN_HOME'
     }
 
+    environment {
+        ARTIFACT_VERSION = "1.0.${BUILD_NUMBER}"  
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
                 git 'https://github.com/SurajMishraNagarro/SpringMVC_Calculator.git'
             }
         }
+        
         stage('Build & Test') {
             steps {
-                bat 'mvn clean test'
+                bat 'mvn clean package -Drevision=${ARTIFACT_VERSION}'
             }
         }
+        
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('Sonarqube') {
@@ -34,9 +40,13 @@ pipeline {
                     def rtMaven = Artifactory.newMavenBuild()
                     rtMaven.tool = 'MAVEN_HOME'
                     
-                    rtMaven.deployer server: server, releaseRepo: 'clacmvcapp-libs-release', snapshotRepo: 'clacmvcapp-libs-snapshot'
+                    rtMaven.deployer server: server, 
+                                     releaseRepo: 'clacmvcapp-libs-release', 
+                                     snapshotRepo: 'clacmvcapp-libs-snapshot'
                     
-                    rtMaven.run pom: 'pom.xml', goals: 'clean deploy', buildInfo: buildInfo
+                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") // Exclude sources
+                    
+                    rtMaven.run pom: 'pom.xml', goals: 'deploy -Drevision=${ARTIFACT_VERSION}', buildInfo: buildInfo
 
                     server.publishBuildInfo buildInfo
                 }
@@ -60,7 +70,7 @@ pipeline {
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ]
-            echo "Pipeline finished successfully."
+            echo "Pipeline finished successfully. Artifact version: ${ARTIFACT_VERSION}"
         }
         failure {
             echo "Pipeline failed. Please check the Jenkins build logs for details."

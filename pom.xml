@@ -32,14 +32,6 @@
     </dependency>
   </dependencies>
   
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <name>a0xanrezhajue-artifactory-primary-0-snapshots</name>
-      <url>https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot</url>
-    </snapshotRepository>
-  </distributionManagement>
   
   <build>
     <plugins>
