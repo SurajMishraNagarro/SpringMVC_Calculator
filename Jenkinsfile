@@ -47,8 +47,9 @@ pipeline {
            
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
             
-             rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
-
+            def deployGoals = "deploy -Drevision=${ARTIFACT_VERSION} -DuniqueVersion=false -DaltDeploymentRepository=snapshot::default::https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot/${ARTIFACT_VERSION}"
+            rtMaven.run pom: 'pom.xml', goals: deployGoals.toString(), buildInfo: buildInfo
+            
             server.publishBuildInfo buildInfo
         }
     }
