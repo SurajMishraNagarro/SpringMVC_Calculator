@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        ARTIFACT_VERSION = "1.0.${BUILD_NUMBER}"  
+        ARTIFACT_VERSION = "1.0.${BUILD_NUMBER}"  // Setting a dynamic version
     }
 
     stages {
@@ -30,29 +30,32 @@ pipeline {
             }
         }
         
-        stage('Deploy to Artifactory') {
-            steps {
-                script {
-                    def server = Artifactory.server 'myJFrogInstance'
-                    
-                    def buildInfo = Artifactory.newBuildInfo()
-                    
-                    def rtMaven = Artifactory.newMavenBuild()
-                    rtMaven.tool = 'MAVEN_HOME'
-                    
-                    rtMaven.deployer server: server, 
-                                     releaseRepo: 'clacmvcapp-libs-release', 
-                                     snapshotRepo: 'clacmvcapp-libs-snapshot'
-                    
-                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
-                    rtMaven.deployer.deployArtifacts = true
-                    rtMaven.deployer.deployPattern = '**/target/*.jar=>clacmvcapp-libs-release/${ARTIFACT_VERSION}/'                    
-                    rtMaven.run pom: 'pom.xml', goals: 'deploy -Drevision=${ARTIFACT_VERSION}', buildInfo: buildInfo
+      stage('Deploy to Artifactory') {
+    steps {
+        script {
+            def server = Artifactory.server 'myJFrogInstance'
+            
+            def buildInfo = Artifactory.newBuildInfo()
+            
+            def rtMaven = Artifactory.newMavenBuild()
+            rtMaven.tool = 'MAVEN_HOME'
+            
+            rtMaven.deployer server: server, 
+                             releaseRepo: 'clacmvcapp-libs-release', 
+                             snapshotRepo: 'clacmvcapp-libs-snapshot'
+            
+           
+            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
+            
+            rtMaven.run pom: 'pom.xml', 
+                        goals: "deploy -Drevision=${ARTIFACT_VERSION} -DaltDeploymentRepository=snapshotRepo::default::https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot/${ARTIFACT_VERSION}", 
+                        buildInfo: buildInfo
 
-                    server.publishBuildInfo buildInfo
-                }
-            }
+            server.publishBuildInfo buildInfo
         }
+    }
+}
+
     }
     
     post {
