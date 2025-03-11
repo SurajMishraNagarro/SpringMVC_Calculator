@@ -47,11 +47,7 @@ pipeline {
            
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
             
-             rtMaven.run pom: 'pom.xml',
-                        goals: "deploy -Drevision=${ARTIFACT_VERSION} " +
-                               "-Ddeploy.repo.url=https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-release/${ARTIFACT_VERSION} " +
-                               "-Ddeploy.repo.snapshot.url=https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot/${ARTIFACT_VERSION}",
-                        buildInfo: buildInfo
+             rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
 
             server.publishBuildInfo buildInfo
         }
