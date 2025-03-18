@@ -12,24 +12,25 @@ pipeline {
 
     stages {
         stage('Download Artifact') {
-            steps {
-                script {
-                    def server = Artifactory.server 'myJFrogInstance'
-                    
-                    def downloadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/*.war",
-                                 "target": "deploy/"
-                            }
-                        ]
-                    }"""
-                    
-                    echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
-                    server.download spec: downloadSpec
-                }
-            }
+    steps {
+        script {
+            def server = Artifactory.server 'myJFrogInstance'
+            
+            def downloadSpec = """{
+                "files": [
+                    {
+                        "pattern": "com/nagarro/mvc_calc_app/0.0.1-SNAPSHOT/mvc_calc_app-0.0.1-${params.ARTIFACT_VERSION}*.war",
+                        "target": "deploy/"
+                    }
+                ]
+            }"""
+            
+            echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
+            server.download spec: downloadSpec
         }
+    }
+}
+
         
         stage('Build Docker Image') {
             steps {
