@@ -19,7 +19,7 @@ pipeline {
            def downloadSpec = """{
                 "files": [
                 {
-                    "pattern": "com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}*.war",
+                    "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}*.war"
                     "target": "deploy/"
                 }
                 ]
