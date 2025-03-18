@@ -16,14 +16,15 @@ pipeline {
         script {
             def server = Artifactory.server 'myJFrogInstance'
             
-            def downloadSpec = """{
+           def downloadSpec = """{
                 "files": [
-                    {
-                        "pattern": "com/nagarro/mvc_calc_app/0.0.1-SNAPSHOT/mvc_calc_app-0.0.1-${params.ARTIFACT_VERSION}*.war",
-                        "target": "deploy/"
-                    }
+                {
+                    "pattern": "com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}*.war",
+                    "target": "deploy/"
+                }
                 ]
-            }"""
+                }"""
+
             
             echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
             server.download spec: downloadSpec

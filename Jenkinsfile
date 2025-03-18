@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        ARTIFACT_VERSION = "1.0.${BUILD_NUMBER}"  // Setting a dynamic version
+         ARTIFACT_VERSION = "1.0.${BUILD_NUMBER}-SNAPSHOT"  // Setting a dynamic version
     }
 
     stages {
