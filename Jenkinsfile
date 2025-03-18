@@ -47,7 +47,7 @@ pipeline {
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar")
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
             
-            rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
+           rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
             server.publishBuildInfo buildInfo
         }
     }

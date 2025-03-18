@@ -6,12 +6,13 @@
   <groupId>com.nagarro</groupId>
   <artifactId>mvc_calc_app</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${revision}</version>
   <name>mvc_calc_app Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
   <!-- SonarQube properties -->
   <properties>
+    <revision>0.0.1-SNAPSHOT</revision>
     <sonar.projectKey>mvc_calc_app</sonar.projectKey>
     <sonar.projectName>MVC Calculator App</sonar.projectName>
     <sonar.projectVersion>1.0</sonar.projectVersion>
