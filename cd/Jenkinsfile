@@ -48,6 +48,7 @@ pipeline {
     }
 
         
+    // test phase 
     stage('Build Docker Image') {
             steps {
                 script {
