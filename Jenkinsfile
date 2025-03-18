@@ -34,9 +34,7 @@ pipeline {
     steps {
         script {
             def server = Artifactory.server 'myJFrogInstance'
-            
             def buildInfo = Artifactory.newBuildInfo()
-            
             def rtMaven = Artifactory.newMavenBuild()
             rtMaven.tool = 'MAVEN_HOME'
             
@@ -44,16 +42,16 @@ pipeline {
                              releaseRepo: 'clacmvcapp-libs-release', 
                              snapshotRepo: 'clacmvcapp-libs-snapshot'
             
-           
-            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar") 
+            // Exclude the sources JAR and the POM file so that only the WAR is deployed
+            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar")
+            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
             
-            def deployGoals = "deploy -Drevision=${ARTIFACT_VERSION} -DuniqueVersion=false -DaltDeploymentRepository=snapshot::default::https://trialmfnpst.jfrog.io/artifactory/clacmvcapp-libs-snapshot/${ARTIFACT_VERSION}"
-            rtMaven.run pom: 'pom.xml', goals: deployGoals.toString(), buildInfo: buildInfo
-            
+            rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
             server.publishBuildInfo buildInfo
         }
     }
 }
+
 
     }
     
@@ -73,7 +71,11 @@ pipeline {
                 alwaysLinkToLastBuild: true,
                 keepAll: true
             ]
-            echo "Pipeline finished successfully. Artifact version: ${ARTIFACT_VERSION}"
+            echo "CI Pipeline finished successfully. Artifact version: ${ARTIFACT_VERSION}"
+
+            build job: 'com.nagarro.MvcCalculator.pipeline.CD.dev', parameters: [
+                string(name: 'ARTIFACT_VERSION', value: ARTIFACT_VERSION)
+            ]
         }
         failure {
             echo "Pipeline failed. Please check the Jenkins build logs for details."

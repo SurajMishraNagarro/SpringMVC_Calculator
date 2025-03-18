@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact version to deploy')
+    }
+
+    environment {
+        DOCKER_IMAGE = "mvc_calc_app:latest"
+    }
+
+    stages {
+        stage('Download Artifact') {
+            steps {
+                script {
+                    def server = Artifactory.server 'myJFrogInstance'
+                    
+                    def downloadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/*.war",
+                                 "target": "deploy/"
+                            }
+                        ]
+                    }"""
+                    
+                    echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
+                    server.download spec: downloadSpec
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker image using the downloaded WAR file"
+                    sh "docker build -t ${env.DOCKER_IMAGE} ."
+                }
+            }
+        }
+        
+        stage('Deploy Container') {
+            steps {
+                script {
+                    echo "Deploying container on WSL..."
+                    sh "docker rm -f mvc_calc_app || true"
+                    sh "docker run -d -p 8090:8080 --name mvc_calc_app ${env.DOCKER_IMAGE}"
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo "CD Pipeline completed successfully. Deployed artifact version: ${params.ARTIFACT_VERSION}"
+        }
+        failure {
+            echo "CD Pipeline failed. Please check the logs for details."
+        }
+    }
+}
