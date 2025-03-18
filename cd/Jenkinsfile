@@ -20,7 +20,7 @@ pipeline {
                 "files": [
                 {
                     "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}*.war"
-                    "target": "deploy/"
+                    "target": "/"
                 }
                 ]
                 }"""
