@@ -10,31 +10,45 @@ pipeline {
         DOCKER_IMAGE = "mvc_calc_app:latest"
     }
 
-    stages {
-        stage('Download Artifact') {
-    steps {
-        script {
-            def server = Artifactory.server 'myJFrogInstance'
-            
-          def downloadSpec = """{
-            "files": [
-            {
-                "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-*.war",
-                "target": "deploy/",
-                 "flat": "true"
-            }
-            ]
-            }"""
 
-            
-            echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
-            server.download spec: downloadSpec
+
+    stages {
+        
+    stage('Clean Deploy Folder') {
+        steps {
+            script {
+           
+                bat 'if exist deploy rd /s /q deploy'
+                bat 'mkdir deploy'
+            }
         }
     }
-}
+        
+        
+    stage('Download Artifact') {
+        steps {
+            script {
+                def server = Artifactory.server 'myJFrogInstance'
+            
+                def downloadSpec = """{
+                "files": [
+                {
+                    "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-*.war",
+                    "target": "deploy/",
+                    "flat": "true"
+                }
+                ]
+                }"""
+
+            
+                echo "Downloading artifact for version ${params.ARTIFACT_VERSION}"
+                server.download spec: downloadSpec
+            }
+        }
+    }
 
         
-        stage('Build Docker Image') {
+    stage('Build Docker Image') {
             steps {
                 script {
                     echo "Building Docker image using the downloaded WAR file"
@@ -43,7 +57,7 @@ pipeline {
             }
         }
         
-        stage('Deploy Container') {
+    stage('Deploy Container') {
             steps {
                 script {
                     echo "Deploying container on WSL..."
