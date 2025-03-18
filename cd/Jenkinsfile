@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact version to deploy')
+        string(name: 'ARTIFACT_VERSION', description: 'Artifact version to deploy')
     }
 
     environment {
@@ -19,8 +19,8 @@ pipeline {
            def downloadSpec = """{
             "files": [
             {
-                "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}*.war",
-                "target": "deploy/"
+                "pattern": "clacmvcapp-libs-snapshot/com/nagarro/mvc_calc_app/${params.ARTIFACT_VERSION}/mvc_calc_app-${params.ARTIFACT_VERSION}.war",
+                "target": "/"
             }
                 ]
             }"""
