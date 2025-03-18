@@ -52,21 +52,21 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image using the downloaded WAR file"
-                    sh "docker build -t ${env.DOCKER_IMAGE} ."
+                    bat "wsl docker build -t %DOCKER_IMAGE% ."
                 }
             }
         }
         
-    stage('Deploy Container') {
-            steps {
-                script {
-                    echo "Deploying container on WSL..."
-                    sh "docker rm -f mvc_calc_app || true"
-                    sh "docker run -d -p 8090:8080 --name mvc_calc_app ${env.DOCKER_IMAGE}"
-                }
-            }
+   stage('Deploy Container') {
+    steps {
+        script {
+            echo "Deploying container on WSL..."
+            bat "wsl bash -c 'docker rm -f mvc_calc_app || true'"
+            bat "wsl docker run -d -p 8090:8080 --name mvc_calc_app %DOCKER_IMAGE%"
         }
     }
+}
+
     
     post {
         success {
