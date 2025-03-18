@@ -23,6 +23,12 @@ pipeline {
             }
         }
     }
+
+    stage('Who Am I?') {
+            steps {
+                bat "whoami"
+            }
+        }
         
         
     stage('Download Artifact') {
