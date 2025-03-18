@@ -43,7 +43,6 @@ pipeline {
                              releaseRepo: 'clacmvcapp-libs-release', 
                              snapshotRepo: 'clacmvcapp-libs-snapshot'
             
-            // Exclude the sources JAR and the POM file so that only the WAR is deployed
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar")
             rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
             
