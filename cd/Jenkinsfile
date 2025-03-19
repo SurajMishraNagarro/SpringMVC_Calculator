@@ -68,7 +68,7 @@ pipeline {
     steps {
         script {
             echo "Deploying container on WSL..."
-            bat "wsl bash -c 'docker rm -f mvc_calc_app || true'"
+            bat "wsl bash -c \"docker rm -f mvc_calc_app || true\""
             bat "wsl docker run -d -p 8090:8080 --name mvc_calc_app %DOCKER_IMAGE%"
         }
     }
