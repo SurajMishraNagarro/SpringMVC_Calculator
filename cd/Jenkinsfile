@@ -24,12 +24,6 @@ pipeline {
         }
     }
 
-    stage('Who Am I?') {
-            steps {
-                bat "whoami"
-            }
-        }
-        
         
     stage('Download Artifact') {
         steps {
@@ -53,8 +47,6 @@ pipeline {
         }
     }
 
-        
-    // test phase 2
     stage('Build Docker Image') {
             steps {
                 script {

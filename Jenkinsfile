@@ -23,13 +23,13 @@ pipeline {
             }
         }
         
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('Sonarqube') {
-        //             bat 'mvn sonar:sonar'
-        //         }
-        //     }
-        // }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
         
       stage('Deploy to Artifactory') {
     steps {
