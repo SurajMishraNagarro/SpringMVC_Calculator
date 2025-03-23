@@ -56,14 +56,14 @@ pipeline {
             }
         }
 
-    stage('Prune Old Docker Images and Containers') {
-        steps {
-            script {
-                echo "Pruning unused Docker images, containers, and networks..."
-                bat "wsl bash -c \"docker system prune -f\""
-            }
-        }
-    }
+    // stage('Prune Old Docker Images and Containers') {
+    //     steps {
+    //         script {
+    //             echo "Pruning unused Docker images, containers, and networks..."
+    //             bat "wsl bash -c \"docker system prune -f\""
+    //         }
+    //     }
+    // }
 
         
    stage('Deploy Container') {
