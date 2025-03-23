@@ -31,26 +31,26 @@ pipeline {
             }
         }
         
-      stage('Deploy to Artifactory') {
-    steps {
-        script {
-            def server = Artifactory.server 'myJFrogInstance'
-            def buildInfo = Artifactory.newBuildInfo()
-            def rtMaven = Artifactory.newMavenBuild()
-            rtMaven.tool = 'MAVEN_HOME'
+        stage('Deploy to Artifactory') {
+            steps {
+                script {
+                    def server = Artifactory.server 'myJFrogInstance'
+                    def buildInfo = Artifactory.newBuildInfo()
+                    def rtMaven = Artifactory.newMavenBuild()
+                    rtMaven.tool = 'MAVEN_HOME'
             
-            rtMaven.deployer server: server, 
-                             releaseRepo: 'clacmvcapp-libs-release', 
-                             snapshotRepo: 'clacmvcapp-libs-snapshot'
+                    rtMaven.deployer server: server, 
+                                     releaseRepo: 'clacmvcapp-libs-release', 
+                                     snapshotRepo: 'clacmvcapp-libs-snapshot'
             
-            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar")
-            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
+                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*-sources.jar")
+                    rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.pom")
             
-            rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
-            server.publishBuildInfo buildInfo
+                    rtMaven.run pom: 'pom.xml', goals: ("deploy -Drevision=" + ARTIFACT_VERSION.toString()), buildInfo: buildInfo
+                    server.publishBuildInfo buildInfo
+                }
+            }
         }
-    }
-}
 
 
     }
