@@ -51,7 +51,7 @@ pipeline {
         steps {
             script {
                 echo "Pruning unused Docker images, containers, and networks..."
-                bat "wsl bash -c \"docker prune images -f\""
+                bat "wsl bash -c \"docker image prune -f\""
             }
         }
     }
