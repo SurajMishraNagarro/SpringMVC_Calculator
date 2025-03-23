@@ -1,4 +1,4 @@
-//  CI Pipeline
+// Pipeline
 pipeline {
     agent any
 
@@ -57,22 +57,24 @@ pipeline {
     
     post {
         success {
-            junit 'target/surefire-reports/*.xml'
+            // junit 'target/surefire-reports/*.xml'
             
             // Archive the coverage reports.
-            archiveArtifacts artifacts: 'target/site/jacoco/**/*.*', allowEmptyArchive: true
+            // archiveArtifacts artifacts: 'target/site/jacoco/**/*.*', allowEmptyArchive: true
             
             // Publish the HTML coverage report to Jenkins.
-            publishHTML target: [
-                reportDir: 'target/site/jacoco',
-                reportFiles: 'index.html',
-                reportName: 'Code Coverage Report',
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true
-            ]
+            // publishHTML target: [
+            //     reportDir: 'target/site/jacoco',
+            //     reportFiles: 'index.html',
+            //     reportName: 'Code Coverage Report',
+            //     allowMissing: false,
+            //     alwaysLinkToLastBuild: true,
+            //     keepAll: true
+            // ]
             echo "CI Pipeline finished successfully. Artifact version: ${ARTIFACT_VERSION}"
 
+           
+            //build new job 
             build job: 'com.nagarro.MvcCalculator.pipeline.CD.dev', parameters: [
                 string(name: 'ARTIFACT_VERSION', value: ARTIFACT_VERSION)
             ]
