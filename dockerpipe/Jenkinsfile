@@ -47,6 +47,15 @@ pipeline {
         }
     }
 
+    stage('Prune Old Docker Images') {
+        steps {
+            script {
+                echo "Pruning unused Docker images, containers, and networks..."
+                bat "wsl bash -c \"docker prune images -f\""
+            }
+        }
+    }
+
     stage('Build Docker Image') {
             steps {
                 script {
@@ -55,21 +64,12 @@ pipeline {
                 }
             }
         }
-
-    // stage('Prune Old Docker Images and Containers') {
-    //     steps {
-    //         script {
-    //             echo "Pruning unused Docker images, containers, and networks..."
-    //             bat "wsl bash -c \"docker system prune -f\""
-    //         }
-    //     }
-    // }
-
         
    stage('Deploy Container') {
         steps {
         script {
             echo "Deploying container on WSL..."
+            bat "wsl bash -c \"docker rm -f mvc_calc_app || true\""
             bat "wsl docker run -d -p 8090:8080 --name mvc_calc_app %DOCKER_IMAGE%"
         }
         }
