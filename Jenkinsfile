@@ -35,7 +35,7 @@ pipeline {
                 script {
                     echo "Stopping any running container and pruning unused Docker images..."
                     bat 'wsl bash -c "docker rm -f mvc_calc_app || true"'
-                    bat 'wsl bash -c "docker rmi mvc_calc_app"'
+                    bat 'wsl bash -c "docker rmi mvc_calc_app || true"'
                 }
             }
         }
