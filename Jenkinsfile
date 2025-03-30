@@ -30,10 +30,11 @@ pipeline {
             }
         }
 
-        stage('Prune Old Docker Images') {
+         stage('Clean Docker Environment') {
             steps {
                 script {
-                    echo "Pruning unused Docker images, containers, and networks..."
+                    echo "Stopping any running container and pruning unused Docker images..."
+                    bat 'wsl bash -c "docker rm -f mvc_calc_app || true"'
                     bat 'wsl bash -c "docker image prune -f"'
                 }
             }
