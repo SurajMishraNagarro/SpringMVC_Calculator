@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        ARTIFACT_VERSION = "0.0.${BUILD_NUMBER}-SNAPSHOT" 
+        DOCKER_IMAGE = "mvc_calc_app:latest"
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
         
         stage('Build & Test') {
             steps {
-                bat 'mvn clean package -Drevision=${ARTIFACT_VERSION}'
+                bat 'mvn clean package'
             }
         }
         
@@ -29,6 +29,34 @@ pipeline {
                 }
             }
         }
+
+        stage('Prune Old Docker Images') {
+            steps {
+                script {
+                    echo "Pruning unused Docker images, containers, and networks..."
+                    bat 'wsl bash -c "docker image prune -f"'
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker image using the WAR file from target folder..."
+                    bat 'wsl docker build -t %DOCKER_IMAGE% .'
+                }
+            }
+        }
+        
+        stage('Deploy Container') {
+            steps {
+                script {
+                    echo "Deploying container on WSL..."
+                    bat 'wsl bash -c "docker rm -f mvc_calc_app || true"'
+                    bat 'wsl docker run -d -p 8090:8080 --name mvc_calc_app %DOCKER_IMAGE%'
+                }
+            }
+        }
         
 
     }
@@ -36,7 +64,7 @@ pipeline {
     post {
         success {
 
-            echo "CI Pipeline finished successfully. Artifact version: ${ARTIFACT_VERSION}"
+            echo "Pipeline finished successfully"
 
         }
         failure {
