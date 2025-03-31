@@ -71,7 +71,9 @@ pipeline {
        stage('Deploy to EC2') {
             steps {
                 sshagent(['ec2-mvc-ssh-key']) {
-                    bat 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"'
+                    bat '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
+                    '''
                 }
             }
         }
