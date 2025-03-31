@@ -37,9 +37,8 @@ pipeline {
         stage('Clean Docker Environment') {
             steps {
                 script {
-                    echo "Stopping any running container and removing old image..."
-                    bat 'wsl bash -c "docker rm -f mvc_calc_app || true"'
-                    bat 'wsl bash -c "docker rmi mvc_calc_app || true"'
+                    echo "removing untagged image..."
+                    bat 'docker image prune || true"'
                 }
             }
         }
