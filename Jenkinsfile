@@ -70,9 +70,9 @@ pipeline {
 
        stage('Deploy to EC2') {
             steps {
-                bat '''
-                    ssh -i "C:\\Users\\surajmishra\\Downloads\\mvc_calc_server.pem" -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
-                '''
+                sshagent(['ec2-mvc-ssh-key']) {
+                    bat 'ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"'
+                }
             }
         }
         
