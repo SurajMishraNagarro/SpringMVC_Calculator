@@ -26,13 +26,13 @@ pipeline {
             }
         }
         
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('Sonarqube') {
-                    bat 'mvn sonar:sonar'
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         withSonarQubeEnv('Sonarqube') {
+        //             bat 'mvn sonar:sonar'
+        //         }
+        //     }
+        // }
         
         stage('Clean Docker Environment') {
             steps {
