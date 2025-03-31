@@ -11,8 +11,6 @@ pipeline {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "876724398547"
         ECR_REPO = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/surajmishra/mvc_calc_app"
-        EC2_HOST = "ec2-52-66-243-147.ap-south-1.compute.amazonaws.com"
-        SSH_CREDENTIALS_ID = "ec2-mvc-ssh-key"
     }
 
     stages {
@@ -70,20 +68,14 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-    steps {
-        bat '''
-            ssh -i "C:\\Users\\surajmishra\\Downloads\\mvc_calc_server.pem" -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com << "EOF"
-            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
-            docker pull ${ECR_REPO}:latest
-            docker stop mvc_calc_app || true
-            docker rm mvc_calc_app || true
-            docker image prune -f
-            docker run -d --name mvc_calc_app -p 8090:8080 ${ECR_REPO}:latest
-            EOF
-        '''
-    }
-}
+       stage('Deploy to EC2') {
+            steps {
+                bat '''
+                    ssh -i "C:\\Users\\surajmishra\\Downloads\\mvc_calc_server.pem" -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
+                '''
+            }
+        }
+
 
 
         
