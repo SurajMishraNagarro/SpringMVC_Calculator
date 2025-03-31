@@ -11,7 +11,7 @@ pipeline {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "876724398547"
         ECR_REPO = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/surajmishra/mvc_calc_app"
-        EC2_HOST = "52.66.243.147"
+        EC2_HOST = "ec2-52-66-243-147.ap-south-1.compute.amazonaws.com"
         SSH_CREDENTIALS_ID = "ec2-mvc-ssh-key"
     }
 
