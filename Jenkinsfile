@@ -73,7 +73,7 @@ pipeline {
         stage('Deploy to EC2') {
     steps {
         bat '''
-            ssh -i C:\\path\\to\\mvc_calc_server.pem -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com << "EOF"
+            ssh -i "C:\\Users\\surajmishra\\Downloads\\mvc_calc_server.pem" -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com << "EOF"
             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
             docker pull ${ECR_REPO}:latest
             docker stop mvc_calc_app || true
