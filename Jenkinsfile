@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     echo "removing untagged image..."
-                    bat 'docker image prune || true"'
+                    bat 'wsl docker image prune || true"'
                 }
             }
         }
