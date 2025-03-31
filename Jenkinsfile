@@ -37,8 +37,9 @@ pipeline {
         stage('Clean Docker Environment') {
             steps {
                 script {
-                    echo "removing untagged image..."
-                    bat 'wsl docker image prune || true"'
+                    echo "Stopping any running container and removing old image..."
+                    bat 'wsl bash -c "docker rmi mvc_calc_app || true"'
+                    bat 'wsl docker rmi  %ECR_REPO%:latest  || true'
                 }
             }
         }
