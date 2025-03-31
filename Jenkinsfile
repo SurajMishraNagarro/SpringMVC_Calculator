@@ -72,7 +72,7 @@ pipeline {
             steps {
                 sshagent(['ec2-mvc-ssh-key']) {
                     bat '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
+                        ssh ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
                     '''
                 }
             }
