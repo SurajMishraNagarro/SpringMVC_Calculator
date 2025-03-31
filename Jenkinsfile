@@ -74,20 +74,21 @@ pipeline {
             steps {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
-                        bat '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@%EC2_HOST% << EOF
-                        aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%
-                        docker pull %ECR_REPO%:latest
-                        docker stop mvc_calc_app || true
-                        docker rm mvc_calc_app || true
-                        docker image prune
-                        docker run -d --name mvc_calc_app -p 8090:8080 %ECR_REPO%:latest
-                        EOF
-                        '''
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << 'EOF'
+                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
+                            docker pull ${ECR_REPO}:latest
+                            docker stop mvc_calc_app || true
+                            docker rm mvc_calc_app || true
+                            docker image prune -f
+                            docker run -d --name mvc_calc_app -p 8090:8080 ${ECR_REPO}:latest
+                            EOF
+                            '''
+                        }
                     }
                 }
             }
-        }
+
         
     }
     
