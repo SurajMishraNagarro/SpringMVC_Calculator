@@ -39,10 +39,10 @@ pipeline {
                 script {
                     echo "Stopping any running container and removing old image..."
                     bat 'wsl bash -c "docker rmi mvc_calc_app || true"'
-                    bat 'wsl docker rmi  %ECR_REPO%:latest  || true'
-
+                    bat 'wsl bash -c "docker rmi %ECR_REPO%:latest || true"'
+            
                     echo "Deleting existing image from AWS ECR..."
-                    bat 'aws ecr batch-delete-image --repository-name surajmishra/mvc_calc_app --image-ids imageTag=latest || true'
+                    bat 'wsl bash -c "aws ecr batch-delete-image --repository-name surajmishra/mvc_calc_app --image-ids imageTag=latest || true"'
                 }
             }
         }
