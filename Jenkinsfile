@@ -72,22 +72,16 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                script {
-                    sshagent([SSH_CREDENTIALS_ID]) {
-                        sh '''
-                            ssh  -v -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << 'EOF'
-                            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
-                            docker pull ${ECR_REPO}:latest
-                            docker stop mvc_calc_app || true
-                            docker rm mvc_calc_app || true
-                            docker image prune -f
-                            docker run -d --name mvc_calc_app -p 8090:8080 ${ECR_REPO}:latest
-                            EOF
-                            '''
-                        }
-                    }
-                }
+                sshCommand remote: [host: EC2_HOST, credentialsId: SSH_CREDENTIALS_ID, user: 'ubuntu'], command: """
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
+                    docker pull ${ECR_REPO}:latest
+                    docker stop mvc_calc_app || true
+                    docker rm mvc_calc_app || true
+                    docker image prune -f
+                    docker run -d --name mvc_calc_app -p 8090:8080 ${ECR_REPO}:latest
+                """
             }
+        }
 
         
     }
