@@ -11,6 +11,8 @@ pipeline {
         AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "876724398547"
         ECR_REPO = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/surajmishra/mvc_calc_app"
+        EC2_HOST = "52.66.243.147"
+        SSH_CREDENTIALS_ID = "ec2-mvc-ssh-key"
     }
 
     stages {
@@ -61,9 +63,28 @@ pipeline {
                 script {
                     
                     echo "Pushing the Docker image to ECR..."
-                    bat 'wsl bash -c "aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %AWS_ACCOUNT_ID%.dkr.ecr.%AWS_REGION%.amazonaws.com"'
+                    bat 'wsl bash -c "aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%"'
                     bat 'wsl docker tag %DOCKER_IMAGE% %ECR_REPO%:latest'                   
                     bat 'wsl docker push %ECR_REPO%:latest'
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        bat '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@%EC2_HOST% << EOF
+                        aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%
+                        docker pull %ECR_REPO%:latest
+                        docker stop mvc_calc_app || true
+                        docker rm mvc_calc_app || true
+                        docker image prune
+                        docker run -d --name mvc_calc_app -p 8090:8080 %ECR_REPO%:latest
+                        EOF
+                        '''
+                    }
                 }
             }
         }
