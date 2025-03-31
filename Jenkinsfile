@@ -75,7 +75,7 @@ pipeline {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << 'EOF'
+                            ssh  -v -o StrictHostKeyChecking=no ubuntu@${EC2_HOST} << 'EOF'
                             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
                             docker pull ${ECR_REPO}:latest
                             docker stop mvc_calc_app || true
