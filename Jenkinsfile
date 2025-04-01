@@ -68,15 +68,15 @@ pipeline {
             }
         }
 
-       stage('Deploy to EC2') {
-            steps {
-                sshagent(['ec2-mvc-ssh-key']) {
-                    bat '''
-                        ssh ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
-                    '''
-                }
-            }
-        }
+    //    stage('Deploy to EC2') {
+    //         steps {
+    //             sshagent(['ec2-mvc-ssh-key']) {
+    //                 bat '''
+    //                     ssh ubuntu@ec2-52-66-255-145.ap-south-1.compute.amazonaws.com "bash ~/deploy.sh"
+    //                 '''
+    //             }
+    //         }
+    //     }
         
     }
     
